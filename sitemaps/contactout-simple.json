@@ -1,0 +1,57 @@
+{
+    "_id": "ContactOut",
+    "startUrl": [
+        "https://contactout.com/dashboard/search?employeeSize=1_10&employee_size=1_10%7C51_200%7C11_50&location=United+States&page=1&skills=Blockchain&totalYears=1_2%7C3_5%7C6_10%7C10_9999"
+    ],
+    "selectors": [
+        {
+            "id": "User",
+            "parentSelectors": [
+                "Pagination"
+            ],
+            "type": "SelectorElement",
+            "selector": "div.p-4",
+            "multiple": true
+        },
+        {
+            "id": "Name",
+            "parentSelectors": [
+                "User"
+            ],
+            "type": "SelectorText",
+            "selector": "span.inline-block",
+            "multiple": false,
+            "regex": ""
+        },
+        {
+            "id": "Location",
+            "parentSelectors": [
+                "User"
+            ],
+            "type": "SelectorText",
+            "selector": "div.css-sh1n0w.text-gray-500",
+            "multiple": false,
+            "regex": ""
+        },
+        {
+            "id": "Linkedin",
+            "parentSelectors": [
+                "User"
+            ],
+            "type": "SelectorLink",
+            "selector": "a[href*=\"linkedin\"]",
+            "multiple": false,
+            "linkType": "linkFromHref"
+        },
+        {
+            "id": "Pagination",
+            "parentSelectors": [
+                "_root",
+                "Pagination"
+            ],
+            "paginationType": "auto",
+            "type": "SelectorPagination",
+            "selector": ".md\\:relative button.text-gray-500.rounded-r-md"
+        }
+    ]
+}

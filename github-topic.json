@@ -36,13 +36,13 @@
         },
         {
             "id": "Repo",
+            "linkType": "linkFromHref",
             "multiple": false,
             "parentSelectors": [
                 "RepoItem"
             ],
-            "regex": "",
             "selector": "h3",
-            "type": "SelectorText"
+            "type": "SelectorLink"
         },
         {
             "id": "Star",
@@ -162,6 +162,44 @@
             "regex": "",
             "selector": "a.my-1",
             "type": "SelectorText"
+        },
+        {
+            "id": "Forks",
+            "multiple": false,
+            "parentSelectors": [
+                "Repo"
+            ],
+            "regex": "",
+            "selector": "span#repo-network-counter",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Website",
+            "linkType": "linkFromHref",
+            "multiple": false,
+            "parentSelectors": [
+                "Repo"
+            ],
+            "selector": ".my-3 a.text-bold",
+            "type": "SelectorLink"
+        },
+        {
+            "extractAttribute": "href",
+            "id": "Contributors",
+            "parentSelectors": [
+                "Repo"
+            ],
+            "selector": ".mb-2.mr-2 a",
+            "type": "SelectorGroup"
+        },
+        {
+            "extractAttribute": "href",
+            "id": "Sponsors",
+            "parentSelectors": [
+                "Repo"
+            ],
+            "selector": ".mb-2.d-flex a[data-hovercard-type]",
+            "type": "SelectorGroup"
         }
     ]
 }

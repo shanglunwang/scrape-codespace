@@ -1,0 +1,167 @@
+{
+    "_id": "Github-Topic",
+    "startUrl": [
+        "https://github.com/topics"
+    ],
+    "selectors": [
+        {
+            "id": "LoadMore",
+            "paginationType": "clickMore",
+            "parentSelectors": [
+                "_root",
+                "LoadMore"
+            ],
+            "selector": "button.ajax-pagination-btn",
+            "type": "SelectorPagination"
+        },
+        {
+            "id": "Topic",
+            "linkType": "linkFromHref",
+            "multiple": true,
+            "parentSelectors": [
+                "LoadMore"
+            ],
+            "selector": "a.no-underline.flex-1.d-flex.flex-column",
+            "type": "SelectorLink"
+        },
+        {
+            "id": "TopicLoadMore",
+            "paginationType": "clickMore",
+            "parentSelectors": [
+                "Topic",
+                "TopicLoadMore"
+            ],
+            "selector": "button.ajax-pagination-btn",
+            "type": "SelectorPagination"
+        },
+        {
+            "id": "Repo",
+            "multiple": false,
+            "parentSelectors": [
+                "RepoItem"
+            ],
+            "regex": "",
+            "selector": "h3",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Star",
+            "multiple": false,
+            "parentSelectors": [
+                "RepoItem"
+            ],
+            "regex": "",
+            "selector": "span#repo-stars-counter-star",
+            "type": "SelectorText"
+        },
+        {
+            "id": "RepoItem",
+            "multiple": true,
+            "parentSelectors": [
+                "TopicLoadMore"
+            ],
+            "selector": "article",
+            "type": "SelectorElement"
+        },
+        {
+            "id": "Recent Updated",
+            "multiple": false,
+            "parentSelectors": [
+                "RepoItem"
+            ],
+            "regex": "",
+            "selector": "relative-time",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Language",
+            "multiple": false,
+            "parentSelectors": [
+                "RepoItem"
+            ],
+            "regex": "",
+            "selector": "span[itemprop='programmingLanguage']",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Tags",
+            "multiple": false,
+            "parentSelectors": [
+                "RepoItem"
+            ],
+            "regex": "",
+            "selector": ".border-bottom.color-border-muted.d-flex.flex-wrap",
+            "type": "SelectorText"
+        },
+        {
+            "id": "isSponsorable",
+            "multiple": false,
+            "parentSelectors": [
+                "RepoItem"
+            ],
+            "regex": "",
+            "selector": "span.v-align-middle",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Summary",
+            "multiple": false,
+            "parentSelectors": [
+                "RepoItem"
+            ],
+            "regex": "",
+            "selector": "p",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Topic Name",
+            "multiple": false,
+            "parentSelectors": [
+                "TopicLoadMore"
+            ],
+            "regex": "",
+            "selector": "h1.h1",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Topic Description",
+            "multiple": false,
+            "parentSelectors": [
+                "TopicLoadMore"
+            ],
+            "regex": "",
+            "selector": ".markdown-body p",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Wiki",
+            "multiple": false,
+            "parentSelectors": [
+                "TopicLoadMore"
+            ],
+            "regex": "",
+            "selector": "span.css-truncate",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Topic Followers",
+            "multiple": false,
+            "parentSelectors": [
+                "TopicLoadMore"
+            ],
+            "regex": "",
+            "selector": "dd.color-fg-muted",
+            "type": "SelectorText"
+        },
+        {
+            "id": "Related Topics",
+            "multiple": false,
+            "parentSelectors": [
+                "TopicLoadMore"
+            ],
+            "regex": "",
+            "selector": "a.my-1",
+            "type": "SelectorText"
+        }
+    ]
+}

@@ -1,0 +1,165 @@
+{
+  "_id": "Github-Repo-RecentUpdate",
+  "startUrl": [
+    "https://github.com/search?q=android+project&type=repositories&s=updated&o=desc&p=100"
+  ],
+  "selectors": [
+    {
+      "id": "Pagination",
+      "paginationType": "auto",
+      "parentSelectors": ["_root", "Pagination"],
+      "selector": "a[aria-label='Previous Page']",
+      "type": "SelectorPagination"
+    },
+    {
+      "id": "RepoLink",
+      "linkType": "linkFromHref",
+      "multiple": false,
+      "parentSelectors": ["RepoItem"],
+      "selector": ".MHoGG a",
+      "type": "SelectorLink"
+    },
+    {
+      "id": "Language",
+      "multiple": false,
+      "parentSelectors": ["RepoItem"],
+      "regex": "",
+      "selector": "span[aria-label*=\"language\"]",
+      "type": "SelectorText"
+    },
+    {
+      "id": "RepoItem",
+      "multiple": true,
+      "parentSelectors": ["Pagination"],
+      "selector": "div.flszRz",
+      "type": "SelectorElement"
+    },
+    {
+      "id": "Star",
+      "multiple": false,
+      "parentSelectors": ["RepoItem"],
+      "regex": "",
+      "selector": ".jJYFGF span",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Update Time",
+      "multiple": false,
+      "parentSelectors": ["RepoItem"],
+      "regex": "",
+      "selector": "div.liVpTx",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Tags",
+      "multiple": false,
+      "parentSelectors": ["RepoItem"],
+      "regex": "",
+      "selector": "div.jgRnBg",
+      "type": "SelectorText"
+    },
+    {
+      "id": "UserLink",
+      "linkType": "linkFromHref",
+      "multiple": false,
+      "parentSelectors": ["RepoLink"],
+      "selector": "a[data-hovercard-type]",
+      "type": "SelectorLink"
+    },
+    {
+      "id": "Commits",
+      "multiple": false,
+      "parentSelectors": ["RepoLink"],
+      "regex": "",
+      "selector": "span.fgColor-default",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Description",
+      "multiple": false,
+      "parentSelectors": ["RepoLink"],
+      "regex": "",
+      "selector": "p.my-3",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Email",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "[itemprop='email'] a",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Location",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "[itemprop='homeLocation'] span",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Company",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": ".p-org div",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Bio",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": ".p-note div",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Name",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "span[itemprop='name']",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Repos",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "#repositories-tab span.Counter",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Stars",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "#stars-tab span.Counter",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Photo",
+      "linkType": "linkFromHref",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "selector": "a[itemprop='image']",
+      "type": "SelectorLink"
+    },
+    {
+      "extractAttribute": "",
+      "id": "Websites",
+      "parentSelectors": ["UserLink"],
+      "selector": "li:nth-of-type(n+5) a.Link--primary",
+      "type": "SelectorGroup"
+    },
+    {
+      "id": "Achievements",
+      "linkType": "linkFromAttributes",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "selector": ".d-none img",
+      "type": "SelectorLink"
+    }
+  ]
+}

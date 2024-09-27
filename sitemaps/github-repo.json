@@ -1,7 +1,7 @@
 {
-  "_id": "Github-Repo-RecentUpdate",
+  "_id": "Github-Repo-Golang-BestMatch",
   "startUrl": [
-    "https://github.com/search?q=android+project&type=repositories&s=updated&o=desc&p=100"
+    "https://github.com/search?q=golang%20project&type=repositories&p=100"
   ],
   "selectors": [
     {
@@ -31,7 +31,7 @@
       "id": "RepoItem",
       "multiple": true,
       "parentSelectors": ["Pagination"],
-      "selector": "div.flszRz",
+      "selector": "div.iwUbcA",
       "type": "SelectorElement"
     },
     {
@@ -39,7 +39,7 @@
       "multiple": false,
       "parentSelectors": ["RepoItem"],
       "regex": "",
-      "selector": ".jJYFGF span",
+      "selector": ".iPuHRc span",
       "type": "SelectorText"
     },
     {
@@ -51,12 +51,11 @@
       "type": "SelectorText"
     },
     {
+      "extractAttribute": "",
       "id": "Tags",
-      "multiple": false,
       "parentSelectors": ["RepoItem"],
-      "regex": "",
-      "selector": "div.jgRnBg",
-      "type": "SelectorText"
+      "selector": "a.hIVEGR",
+      "type": "SelectorGroup"
     },
     {
       "id": "UserLink",
@@ -150,7 +149,7 @@
       "extractAttribute": "",
       "id": "Websites",
       "parentSelectors": ["UserLink"],
-      "selector": "li:nth-of-type(n+5) a.Link--primary",
+      "selector": "li:nth-of-type(n+3) a.Link--primary",
       "type": "SelectorGroup"
     },
     {
@@ -160,6 +159,84 @@
       "parentSelectors": ["UserLink"],
       "selector": ".d-none img",
       "type": "SelectorLink"
+    },
+    {
+      "id": "Issues",
+      "multiple": false,
+      "parentSelectors": ["RepoLink"],
+      "regex": "",
+      "selector": "span#issues-repo-tab-count",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Forks",
+      "multiple": false,
+      "parentSelectors": ["RepoLink"],
+      "regex": "",
+      "selector": "span#repo-network-counter",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Watches",
+      "multiple": false,
+      "parentSelectors": ["RepoLink"],
+      "regex": "",
+      "selector": "#\\:ri\\: span.ml-2",
+      "type": "SelectorText"
+    },
+    {
+      "extractAttribute": "",
+      "id": "Languages",
+      "parentSelectors": ["RepoLink"],
+      "selector": "a.d-inline-flex",
+      "type": "SelectorGroup"
+    },
+    {
+      "extractAttribute": "",
+      "id": "Contributors",
+      "parentSelectors": ["RepoLink"],
+      "selector": "a.flex-self-center",
+      "type": "SelectorGroup"
+    },
+    {
+      "id": "Packages",
+      "multiple": false,
+      "parentSelectors": ["RepoLink"],
+      "regex": "",
+      "selector": ".Counter.ml-1",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Followers",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "a:nth-of-type(1) span.color-fg-default",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Followings",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "a:nth-of-type(2) span",
+      "type": "SelectorText"
+    },
+    {
+      "id": "UserPackages",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "#packages-tab span.Counter",
+      "type": "SelectorText"
+    },
+    {
+      "id": "RecentActivity",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "div.TimelineItem-body",
+      "type": "SelectorText"
     }
   ]
 }

@@ -1,0 +1,99 @@
+{
+  "_id": "Gihtub-PM-20240930",
+  "startUrl": ["https://github.com/search?q=project+manager&type=users&p=100"],
+  "selectors": [
+    {
+      "id": "UserLink",
+      "linkType": "linkFromHref",
+      "multiple": true,
+      "parentSelectors": ["Pagination"],
+      "selector": "a:has(span.hBjWst)",
+      "type": "SelectorLink"
+    },
+    {
+      "id": "Email",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "[itemprop='email'] a",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Location",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "[itemprop='homeLocation'] span",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Company",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": ".p-org div",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Bio",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": ".p-note div",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Name",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "span[itemprop='name']",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Repos",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "#repositories-tab span.Counter",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Stars",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "regex": "",
+      "selector": "#stars-tab span.Counter",
+      "type": "SelectorText"
+    },
+    {
+      "id": "Photo",
+      "linkType": "linkFromHref",
+      "multiple": false,
+      "parentSelectors": ["UserLink"],
+      "selector": "a[itemprop='image']",
+      "type": "SelectorLink"
+    },
+    {
+      "extractAttribute": "",
+      "id": "Websites",
+      "parentSelectors": ["UserLink"],
+      "selector": "li:nth-of-type(n+3) a.Link--primary",
+      "type": "SelectorGroup"
+    },
+    {
+      "extractAttribute": "href",
+      "id": "Achievements",
+      "parentSelectors": ["UserLink"],
+      "selector": "a[href*='achievements']",
+      "type": "SelectorGroup"
+    },
+    {
+      "id": "Pagination",
+      "paginationType": "auto",
+      "parentSelectors": ["_root", "Pagination"],
+      "selector": "a[aria-label='Previous Page']",
+      "type": "SelectorPagination"
+    }
+  ]
+}

@@ -153,12 +153,11 @@
       "type": "SelectorGroup"
     },
     {
+      "extractAttribute": "href",
       "id": "Achievements",
-      "linkType": "linkFromAttributes",
-      "multiple": false,
       "parentSelectors": ["UserLink"],
-      "selector": ".d-none img",
-      "type": "SelectorLink"
+      "selector": "a[href*='achievements']",
+      "type": "SelectorGroup"
     },
     {
       "id": "Issues",

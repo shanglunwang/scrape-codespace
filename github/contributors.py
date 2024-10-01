@@ -85,10 +85,8 @@ def main():
     for repo in repo_names:
         new_links = fetch_recent_contributors(repo)  # Pass the repo object
         userlinks.extend(new_links)  # Add new links to the existing userlinks array
-
-    if userlinks:
-        print(f"Total Contributors Found: {len(userlinks)}")
-        save_user_links_to_csv(userlinks)  # Save to CSV
+        if userlinks:
+            save_user_links_to_csv(userlinks)  # Save to CSV
 
 
 if __name__ == "__main__":

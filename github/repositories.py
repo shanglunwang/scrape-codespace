@@ -1,5 +1,6 @@
 import csv
 import os
+from pathlib import Path
 from dotenv import load_dotenv
 import requests
 
@@ -50,17 +51,7 @@ def save_repositories_to_csv(repositories, filename="repositories.csv"):
         for repo in repositories:
             writer.writerow([repo["full_name"], repo["html_url"]])
 
-# Specify the path to your CSV file
-file_path = "path/to/your/file.csv"
 
-# Read the CSV file
-with open(file_path, mode="r", newline="") as file:
-    reader = csv.reader(file)
-    next(reader)  # Skip the header row
-    repo_names = [row[0] for row in reader]  # Extract repository names
-
-# Print the repository names
-print(repo_names)
 def main():
     query = "solana stars:>1"
     result = search_repositories(query)

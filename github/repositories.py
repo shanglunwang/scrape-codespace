@@ -1,6 +1,8 @@
 import csv
 import os
 from pathlib import Path
+import re
+from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import requests
 
@@ -32,6 +34,7 @@ def search_repositories(query, sort="updated", order="desc"):
         if response.status_code == 200:
             data = response.json()
             repositories.extend(data["items"])
+            print(repositories)
             if (
                 len(data["items"]) < per_page
             ):  # If fewer than per_page items returned, we're done
@@ -51,9 +54,8 @@ def save_repositories_to_csv(repositories, filename="repositories.csv"):
         for repo in repositories:
             writer.writerow([repo["full_name"], repo["html_url"]])
 
-
 def main():
-    query = "solana stars:>1"
+    query = "bitcoin stars:>1"
     result = search_repositories(query)
     save_repositories_to_csv(result)
 

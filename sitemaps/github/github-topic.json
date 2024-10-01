@@ -1,5 +1,5 @@
 {
-  "_id": "Github-Topic-Repo",
+  "_id": "Github-Topic",
   "startUrl": ["https://github.com/topics"],
   "selectors": [
     {

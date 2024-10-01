@@ -3,7 +3,7 @@ from bs4 import BeautifulSoup
 import re
 import csv
 
-
+# get github repo links from html
 def scrape_github_links(url):
     # Fetch the content of the README file
     response = requests.get(url)

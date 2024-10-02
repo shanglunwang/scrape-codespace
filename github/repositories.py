@@ -52,17 +52,30 @@ def search_repositories(query, sort="updated", order="desc"):
 
 def save_repositories_to_csv(repositories, filename=f"res/repositories-{version}.csv"):
     Path("res").mkdir(parents=True, exist_ok=True)
-    with open(filename, mode="w", newline="", encoding="utf-8") as file:
+
+    # Read existing URLs from the CSV file
+    existing_urls = set()
+    if Path(filename).exists():
+        with open(filename, mode="r", newline="", encoding="utf-8") as file:
+            reader = csv.reader(file)
+            next(reader)  # Skip header
+            existing_urls = {row[1] for row in reader}  # Collect existing URLs
+
+    # Write new entries to the CSV
+    with open(filename, mode="a", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(["Repo Name", "URL"])  # Header
         for repo in repositories:
-            writer.writerow([repo["full_name"], repo["html_url"]])
+            repo_url = repo["html_url"]
+            if repo_url not in existing_urls:  # Only add if URL is unique
+                writer.writerow([repo["full_name"], repo_url])
+                existing_urls.add(repo_url)  # Update the set of existing URLs
 
 
 def main():
-    query = "CryptoCurrency"
-    result = search_repositories(query)
-    save_repositories_to_csv(result)
+    query = ["DApp", "Staking", "FOMO", "Liquidity", "Mining"]
+    for q in query:
+        result = search_repositories(q)
+        save_repositories_to_csv(result)
 
 
 if __name__ == "__main__":

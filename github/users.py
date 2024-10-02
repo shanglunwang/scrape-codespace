@@ -18,8 +18,9 @@ input_suffix = 'contributors-202410021911'
 input_file = Path.cwd() / f"res/{input_suffix}.csv"
 
 version = utils.get_current_gmt9()
-user_input_suffix = utils.get_current_gmt9()
-user_input_file = Path.cwd() / f"res/{user_input_suffix}.csv"
+# user_input_suffix = utils.get_current_gmt9()
+user_input_suffix='7days'
+user_input_file = Path.cwd() / f"res/users-{user_input_suffix}.csv"
 new_added = 0  # Initialize new_added globally
 email_members = 0
 
@@ -27,7 +28,7 @@ email_members = 0
 def fetch_user_info(username):
     url = f"https://api.github.com/users/{username}"
     response = requests.get(url, headers=HEADERS)
-
+    
     if response.status_code == 200:
         user_data = response.json()
         return {
@@ -64,7 +65,7 @@ def read_existing_usernames(filename):
 existing_usernames = []  # Read existing usernames[p]
 
 
-def save_user_info_to_csv(user_info_list, filename=f"users-{version}.csv"):
+def save_user_info_to_csv(user_info_list, filename=f"res/users-{version}.csv"):
     global new_added  # Declare new_added as global
     global existing_usernames
     global email_members

@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import utils
 
-input_suffix = "repositories-202410021909"
+input_suffix = "repositories-202410030256"
 input_file = Path.cwd() / f"res/{input_suffix}.csv"
 
 version = utils.get_current_gmt9()

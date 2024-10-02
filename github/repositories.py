@@ -55,7 +55,7 @@ def save_repositories_to_csv(repositories, filename="repositories.csv"):
             writer.writerow([repo["full_name"], repo["html_url"]])
 
 def main():
-    query = "bitcoin stars:>1"
+    query = "smart contract"
     result = search_repositories(query)
     save_repositories_to_csv(result)
 

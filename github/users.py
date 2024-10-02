@@ -13,7 +13,7 @@ HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
 input_file = Path.cwd() / "contributors.csv"
 
-new_added = 0
+new_added = 0  # Initialize new_added globally
 
 
 def fetch_user_info(username):
@@ -48,6 +48,8 @@ def read_existing_usernames(filename):
 
 
 def save_user_info_to_csv(user_info_list, filename="user_info.csv"):
+    global new_added  # Declare new_added as global
+
     existing_usernames = read_existing_usernames(filename)  # Read existing usernames
 
     file_exists = os.path.isfile(filename)  # Check if the file already exists
@@ -85,7 +87,7 @@ def save_user_info_to_csv(user_info_list, filename="user_info.csv"):
                     user_info["username"]
                 )  # Update the set with new username
                 print(f"New Added: {user_info}")
-                new_added = new_added + 1
+                new_added += 1  # Increment new_added
             else:
                 print(f"Already Exist: {user_info}")
 
@@ -94,7 +96,7 @@ def main():
     with open(input_file, mode="r", newline="") as file:
         reader = csv.reader(file)
         next(reader)  # Skip the header row
-        usernames = [row[1] for row in reader]  # Extract repository names
+        usernames = [row[1] for row in reader]  # Ensure correct index for usernames
 
     user_info_list = []  # Initialize an empty list to store user info
 

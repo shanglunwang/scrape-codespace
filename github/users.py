@@ -1,8 +1,10 @@
 import csv
+from datetime import datetime
 import os
 from pathlib import Path
 from dotenv import load_dotenv
 import requests
+import utils
 
 # Load environment variables from .env file
 load_dotenv()
@@ -67,6 +69,7 @@ def save_user_info_to_csv(user_info_list, filename="user_info.csv"):
                     "Website",
                     "Followers",
                     "Repositories",
+                    "Insert_Date",
                 ]
             )  # Header
         for user_info in user_info_list:
@@ -81,6 +84,7 @@ def save_user_info_to_csv(user_info_list, filename="user_info.csv"):
                         user_info["website"],
                         user_info["followers"],
                         user_info["repositories"],
+                        utils.get_current_gmt9(),
                     ]
                 )
                 existing_usernames.add(

@@ -34,7 +34,7 @@ def search_repositories(query, sort="updated", order="desc"):
         if response.status_code == 200:
             data = response.json()
             repositories.extend(data["items"])
-            print(repositories)
+            print(f"({page} page) {repositories}")
             if (
                 len(data["items"]) < per_page
             ):  # If fewer than per_page items returned, we're done
@@ -54,8 +54,9 @@ def save_repositories_to_csv(repositories, filename="repositories.csv"):
         for repo in repositories:
             writer.writerow([repo["full_name"], repo["html_url"]])
 
+
 def main():
-    query = "smart contract"
+    query = "NFT"
     result = search_repositories(query)
     save_repositories_to_csv(result)
 

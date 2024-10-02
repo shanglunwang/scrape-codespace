@@ -58,7 +58,6 @@ def fetch_recent_contributors(repo):
                     if commit.get("author") and commit["author"].get("login"):
                         contributor = commit["author"]["login"]
                         contributors.add(contributor)
-            print(f"{repo}: {contributors}")
             page += 1  # Go to the next page
         else:
             print(f"Failed to fetch data: {response.status_code}")
@@ -83,13 +82,19 @@ def main():
 
     repo_user_links = []  # List to hold tuples of (repo, user link)
 
-    for repo in repo_names:
+    for index, repo in enumerate(repo_names):
         new_links = fetch_recent_contributors(repo)  # Get recent contributors
+        print(
+            f"({index}/{len(repo_names)}) {repo}: {new_links}"
+        )  # Print the index along with the repo and contributors
+
         # Add repo-user link tuples to the list
         for user in new_links:
             repo_user_links.append((repo, user))
+            # Save user links to CSV if the list is not empty
             if repo_user_links:
                 save_user_links_to_csv(repo_user_links)
+
     # Save to CSV
 
 

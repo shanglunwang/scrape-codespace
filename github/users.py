@@ -14,8 +14,11 @@ load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
+input_suffix = 'contributors-202410021911'
 input_file = Path.cwd() / "contributors.csv"
-user_input_file = Path.cwd() / "users.csv"
+
+version = utils.get_current_gmt9()
+user_input_file = Path.cwd() / f"res/{input_suffix}.csv"
 new_added = 0  # Initialize new_added globally
 email_members = 0
 
@@ -60,7 +63,7 @@ def read_existing_usernames(filename):
 existing_usernames = []  # Read existing usernames[p]
 
 
-def save_user_info_to_csv(user_info_list, filename="users.csv"):
+def save_user_info_to_csv(user_info_list, filename=f"users-{version}.csv"):
     global new_added  # Declare new_added as global
     global existing_usernames
     global email_members
@@ -81,6 +84,7 @@ def save_user_info_to_csv(user_info_list, filename="users.csv"):
                     "Followers",
                     "Repositories",
                     "Insert_Date",
+                    "UserLink"
                 ]
             )  # Header
         for user_info in user_info_list:
@@ -96,6 +100,7 @@ def save_user_info_to_csv(user_info_list, filename="users.csv"):
                         user_info["followers"],
                         user_info["repositories"],
                         utils.get_current_gmt9(),
+                        f"https://github.com/{user_info["username"]}"
                     ]
                 )
                 existing_usernames.add(

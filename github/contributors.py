@@ -5,9 +5,12 @@ import os
 import csv
 from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
+import utils
 
-input_file = Path.cwd() / "repositories.csv"
+input_suffix = "repositories-202410021909"
+input_file = Path.cwd() / f"res/{input_suffix}.csv"
 
+version = utils.get_current_gmt9()
 # Load environment variables from .env file
 load_dotenv()
 
@@ -32,7 +35,7 @@ def fetch_most_contributors(repo):
 
 def fetch_recent_contributors(repo):
     # Calculate the date 30 days ago from today
-    days_ago = datetime.now() - timedelta(days=30)
+    days_ago = datetime.now() - timedelta(days=7)
 
     contributors = set()
     page = 1
@@ -66,7 +69,8 @@ def fetch_recent_contributors(repo):
     return list(contributors)
 
 
-def save_user_links_to_csv(repo_user_links, filename="contributors.csv"):
+def save_user_links_to_csv(repo_user_links, filename=f"res/contributors-{version}.csv"):
+    Path("res").mkdir(parents=True, exist_ok=True)
     with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Repository", "User Link"])  # Header
@@ -83,13 +87,13 @@ def main():
     repo_user_links = []  # List to hold tuples of (repo, user link)
 
     for index, repo in enumerate(repo_names):
-        new_links = fetch_recent_contributors(repo)  # Get recent contributors
+        users = fetch_recent_contributors(repo)  # Get recent contributors
         print(
-            f"• {index}/{len(repo_names)} | {repo}: {new_links}"
+            f"• {index}/{len(repo_names)} | {repo}: {users}"
         )  # Print the index along with the repo and contributors
 
         # Add repo-user link tuples to the list
-        for user in new_links:
+        for user in users:
             repo_user_links.append((repo, user))
             # Save user links to CSV if the list is not empty
             if repo_user_links:

@@ -2,6 +2,7 @@ import requests
 from bs4 import BeautifulSoup
 import re
 import csv
+import utils
 
 # get github repo links from html
 def scrape_github_links(url):
@@ -30,9 +31,9 @@ def save_links_to_csv(repos, filename="github_repos.csv"):
     # Save the links to a CSV file
     with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(["Repository Name", "GitHub Link"])  # Write header
+        writer.writerow(["Repository Name", "GitHub Link", "Insert_Date"])  # Write header
         for name, link in repos:
-            writer.writerow([name, link])  # Write each name and link
+            writer.writerow([name, link, utils.get_current_gmt9()])  # Write each name and link
 
 
 if __name__ == "__main__":

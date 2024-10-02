@@ -5,9 +5,12 @@ import re
 from bs4 import BeautifulSoup
 from dotenv import load_dotenv
 import requests
+import utils
 
 # Load environment variables from .env file
 load_dotenv()
+
+version = utils.get_current_gmt9()
 
 # Get the GitHub personal access token from the environment variable
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
@@ -47,7 +50,8 @@ def search_repositories(query, sort="updated", order="desc"):
     return repositories
 
 
-def save_repositories_to_csv(repositories, filename="repositories.csv"):
+def save_repositories_to_csv(repositories, filename=f"res/repositories-{version}.csv"):
+    Path("res").mkdir(parents=True, exist_ok=True)
     with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
         writer.writerow(["Repo Name", "URL"])  # Header
@@ -56,7 +60,7 @@ def save_repositories_to_csv(repositories, filename="repositories.csv"):
 
 
 def main():
-    query = "NFT"
+    query = "CryptoCurrency"
     result = search_repositories(query)
     save_repositories_to_csv(result)
 

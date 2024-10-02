@@ -2,6 +2,7 @@ import csv
 from datetime import datetime
 import os
 from pathlib import Path
+from colorama import Fore, Style
 from dotenv import load_dotenv
 import requests
 import utils
@@ -35,6 +36,9 @@ def fetch_user_info(username):
             "followers": user_data.get("followers", 0),
             "repositories": user_data.get("public_repos", 0),
         }
+    elif response.status_code == 403:
+        print(f"Access forbidden for {username}: {response.json().get('message')}")
+        return None
     else:
         print(f"Failed to fetch user info for {username}: {response.status_code}")
         return None
@@ -53,10 +57,10 @@ def read_existing_usernames(filename):
     return existing_usernames
 
 
-existing_usernames = read_existing_usernames(user_input_file)  # Read existing usernames
+existing_usernames = []  # Read existing usernames[p]
 
 
-def save_user_info_to_csv(user_info_list, filename="user_info.csv"):
+def save_user_info_to_csv(user_info_list, filename="users.csv"):
     global new_added  # Declare new_added as global
     global existing_usernames
     global email_members
@@ -109,21 +113,31 @@ def main():
         next(reader)  # Skip the header row
         usernames = [row[1] for row in reader]  # Ensure correct index for usernames
 
+    global existing_usernames
+    existing_usernames = read_existing_usernames(user_input_file)
+
     user_info_list = []  # Initialize an empty list to store user info
     length = len(usernames)
+
     for index, user in enumerate(usernames):
         user_info = fetch_user_info(user)
         if user_info:
             user_info_list.append(user_info)  # Append only the user info
             if user_info["username"] not in existing_usernames:  # Check for duplicates
                 # Print the index and user information
-                print(f"({index}/{length}) New Inserted: {user_info}")
+                print(f"• {index + 1}/{length} | New Inserted | {user_info}")
             else:
-                print(f"({index}/{length}) Already Existed: {user_info}")
+                print(f"• {index + 1}/{length} | Existed | {user_info}")
+
             save_user_info_to_csv([user_info])
 
     print(
-        f"Import Finished. Imported_Members: {new_added}/{len(usernames)}, Result_Members: {len(existing_usernames)}, Email_Members: {email_members}"
+        f"{Fore.GREEN}🎉 Import Finished! 🎉{Style.RESET_ALL}\n"
+        f"{'-' * 35}\n"
+        f"Imported Members:   {new_added}/{len(usernames)}\n"
+        f"Result Members:     {len(existing_usernames)}\n"
+        f"Email Members:      {email_members}\n"
+        f"{'-' * 35}"
     )
 
 

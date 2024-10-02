@@ -85,7 +85,7 @@ def main():
     for index, repo in enumerate(repo_names):
         new_links = fetch_recent_contributors(repo)  # Get recent contributors
         print(
-            f"({index}/{len(repo_names)}) {repo}: {new_links}"
+            f"• {index}/{len(repo_names)} | {repo}: {new_links}"
         )  # Print the index along with the repo and contributors
 
         # Add repo-user link tuples to the list

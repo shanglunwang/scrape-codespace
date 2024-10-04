@@ -86,10 +86,10 @@ def save_user_links_to_csv(repo_users, filename=f"res/contributors-{version}.csv
     Path("res").mkdir(parents=True, exist_ok=True)
     with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(["Repository", "User Link", "Email", "Commit Date"])  # Header
+        writer.writerow(["Repository", "User Link", "Email", "Commit Date", "Insert Date"])  # Header
         for repo, user in repo_users:
             writer.writerow(
-                [repo, user["username"], user["email"], user["commit_date"]]
+                [repo, user["username"], user["email"], user["commit_date"], utils.get_current_gmt9()]
             )
 
 
@@ -106,7 +106,7 @@ def main():
     for index, repo in enumerate(repo_names):
         users = fetch_recent_contributors(repo)  # Get recent contributors
         print(
-            f"• {index}/{len(repo_names)} | {repo}: {users}"
+            f"• {index}/{len(repo_names)} | {repo}: {len(users)}"
         )  # Print the index along with the repo and contributors
 
         # Add repo-user link tuples to the list

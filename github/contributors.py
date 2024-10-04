@@ -89,7 +89,7 @@ def save_user_links_to_csv(repo_users, filename=f"res/contributors-{version}.csv
         writer.writerow(["Repository", "User Link", "Email", "Commit Date"])  # Header
         for repo, user in repo_users:
             writer.writerow(
-                [repo, user["username"], user["email"]], user["commit_date"]
+                [repo, user["username"], user["email"], user["commit_date"]]
             )
 
 

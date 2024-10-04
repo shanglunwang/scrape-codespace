@@ -18,9 +18,6 @@ load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
-contributors = []
-
-
 def fetch_most_contributors(repo):
     # Construct the API URL for contributors
     url = f"https://api.github.com/repos/{repo}/contributors"
@@ -39,7 +36,7 @@ def fetch_recent_contributors(repo):
     # Calculate the date 30 days ago from today
     days_ago = datetime.now() - timedelta(days=1)
 
-    global contributors
+    contributors = []
     page = 1
 
     while page <= 5:

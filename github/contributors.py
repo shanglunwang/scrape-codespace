@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from datetime import datetime, timedelta
 import utils
 
-input_suffix = "repositories-202410030448"
+input_suffix = "repositories-202410041106"
 input_file = Path.cwd() / f"res/{input_suffix}.csv"
 
 version = utils.get_current_gmt9()
@@ -17,6 +17,8 @@ load_dotenv()
 # Get the GitHub personal access token from the environment variable
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
+
+contributors = []
 
 
 def fetch_most_contributors(repo):
@@ -35,9 +37,9 @@ def fetch_most_contributors(repo):
 
 def fetch_recent_contributors(repo):
     # Calculate the date 30 days ago from today
-    days_ago = datetime.now() - timedelta(days=7)
+    days_ago = datetime.now() - timedelta(days=1)
 
-    contributors = set()
+    global contributors
     page = 1
 
     while page <= 5:
@@ -59,8 +61,19 @@ def fetch_recent_contributors(repo):
                 if commit_date >= days_ago:
                     # Check if the author exists
                     if commit.get("author") and commit["author"].get("login"):
-                        contributor = commit["author"]["login"]
-                        contributors.add(contributor)
+                        username = commit["author"]["login"]
+                        if not any(
+                            contributor["username"] == username
+                            for contributor in contributors
+                        ):
+                            email = commit["commit"]["author"]["email"]
+                            commit_date = commit["commit"]["author"]["date"]
+                            contributor = {
+                                "username": username,
+                                "email": email,
+                                "commit_date": commit_date,
+                            }
+                            contributors.append(contributor)
             page += 1  # Go to the next page
         else:
             print(f"Failed to fetch data: {response.status_code}")
@@ -69,22 +82,26 @@ def fetch_recent_contributors(repo):
     return list(contributors)
 
 
-def save_user_links_to_csv(repo_user_links, filename=f"res/contributors-{version}.csv"):
+def save_user_links_to_csv(repo_users, filename=f"res/contributors-{version}.csv"):
     Path("res").mkdir(parents=True, exist_ok=True)
     with open(filename, mode="w", newline="", encoding="utf-8") as file:
         writer = csv.writer(file)
-        writer.writerow(["Repository", "User Link"])  # Header
-        for repo, link in repo_user_links:
-            writer.writerow([repo, link])
+        writer.writerow(["Repository", "User Link", "Email", "Commit Date"])  # Header
+        for repo, user in repo_users:
+            writer.writerow(
+                [repo, user["username"], user["email"]], user["commit_date"]
+            )
 
 
 def main():
+    # Extract repository names
     with open(input_file, mode="r", newline="") as file:
-        reader = csv.reader(file)
-        next(reader)  # Skip the header row
-        repo_names = [row[0] for row in reader]  # Extract repository names
+        reader = csv.DictReader(file)  # Use DictReader to read rows as dictionaries
+        repo_names = [
+            row["full_name"] for row in reader
+        ]  # Access "full_name" from each row
 
-    repo_user_links = []  # List to hold tuples of (repo, user link)
+    repo_users = []  # List to hold tuples of (repo, user link)
 
     for index, repo in enumerate(repo_names):
         users = fetch_recent_contributors(repo)  # Get recent contributors
@@ -94,12 +111,10 @@ def main():
 
         # Add repo-user link tuples to the list
         for user in users:
-            repo_user_links.append((repo, user))
+            repo_users.append((repo, user))
             # Save user links to CSV if the list is not empty
-            if repo_user_links:
-                save_user_links_to_csv(repo_user_links)
-
-    # Save to CSV
+            if repo_users:
+                save_user_links_to_csv(repo_users)
 
 
 if __name__ == "__main__":

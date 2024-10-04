@@ -6,6 +6,7 @@ from colorama import Fore, Style
 from dotenv import load_dotenv
 import requests
 import utils
+import glob
 
 # Load environment variables from .env file
 load_dotenv()
@@ -14,56 +15,69 @@ load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
-input_suffix = 'contributors-202410030537'
+input_suffix = 'contributors-202410041506'
 input_file = Path.cwd() / f"res/{input_suffix}.csv"
 
-version = '7days'
-# user_input_suffix = utils.get_current_gmt9()
-user_input_suffix='7days'
-user_input_file = Path.cwd() / f"res/users-{user_input_suffix}.csv"
+version = utils.get_current_gmt9()
 new_added = 0  # Initialize new_added globally
 email_members = 0
 
-
-def fetch_user_info(username):
-    url = f"https://api.github.com/users/{username}"
+def fetch_user_info(user):
+    url = f"https://api.github.com/users/{user['username']}"
     response = requests.get(url, headers=HEADERS)
     
     if response.status_code == 200:
         user_data = response.json()
+        
+        # Fetch email and check conditions
+        fetched_email = user_data.get("email", "")
+        
+        # Use input user's email if fetched email is None or empty string
+        if not fetched_email:
+            fetched_email = user.get("email", "")
+        
+        # Check if the email is a noreply email
+        if fetched_email and "noreply" in fetched_email:
+            fetched_email = ""
+
         return {
             "username": user_data.get("login"),
             "name": user_data.get("name", ""),
-            "email": user_data.get("email", ""),
+            "email": fetched_email,
             "bio": user_data.get("bio", ""),
             "location": user_data.get("location", ""),
             "website": user_data.get("blog", ""),
             "followers": user_data.get("followers", 0),
             "repositories": user_data.get("public_repos", 0),
+            "commit_date": user.get('commit_date', '')
         }
     elif response.status_code == 403:
-        print(f"Access forbidden for {username}: {response.json().get('message')}")
+        print(f"Access forbidden for {user['username']}: {response.json().get('message')}")
         return None
     else:
-        print(f"Failed to fetch user info for {username}: {response.status_code}")
+        print(f"Failed to fetch user info for {user['username']}: {response.status_code}")
         return None
 
-
-def read_existing_usernames(filename):
+def read_existing_usernames(prefix="users"):
     global email_members
     existing_usernames = set()
-    if os.path.isfile(filename):
-        with open(filename, mode="r", newline="", encoding="utf-8") as file:
-            reader = csv.DictReader(file)
-            for row in reader:
-                existing_usernames.add(row["Username"])  # Collect existing usernames
-                if row["Email"]:
-                    email_members += 1
+    
+    # Construct the file pattern to match all files starting with the prefix in the res folder
+    file_pattern = os.path.join("res", f"{prefix}*.csv")
+    files = glob.glob(file_pattern)
+    
+    for filename in files:
+        if os.path.isfile(filename):
+            with open(filename, mode="r", newline="", encoding="utf-8") as file:
+                reader = csv.DictReader(file)
+                for row in reader:
+                    existing_usernames.add(row["Username"])  # Collect existing usernames
+                    if row["Email"]:
+                        email_members += 1
+                    
     return existing_usernames
 
-
-existing_usernames = []  # Read existing usernames[p]
-
+existing_usernames = []  # Read existing usernames
 
 def save_user_info_to_csv(user_info_list, filename=f"res/users-{version}.csv"):
     global new_added  # Declare new_added as global
@@ -86,7 +100,8 @@ def save_user_info_to_csv(user_info_list, filename=f"res/users-{version}.csv"):
                     "Followers",
                     "Repositories",
                     "Insert_Date",
-                    "UserLink"
+                    "UserLink",
+                    "Commit_Date"
                 ]
             )  # Header
         for user_info in user_info_list:
@@ -102,7 +117,8 @@ def save_user_info_to_csv(user_info_list, filename=f"res/users-{version}.csv"):
                         user_info["followers"],
                         user_info["repositories"],
                         utils.get_current_gmt9(),
-                        f"https://github.com/{user_info["username"]}"
+                        f"https://github.com/{user_info['username']}",  # Fixed the syntax error here
+                        user_info['commit_date']
                     ]
                 )
                 existing_usernames.add(
@@ -113,20 +129,26 @@ def save_user_info_to_csv(user_info_list, filename=f"res/users-{version}.csv"):
                     email_members += 1
                 new_added += 1  # Increment new_added
 
-
 def main():
     with open(input_file, mode="r", newline="") as file:
-        reader = csv.reader(file)
-        next(reader)  # Skip the header row
-        usernames = [row[1] for row in reader]  # Ensure correct index for usernames
+        reader = csv.DictReader(file)  # Use DictReader for easier access by column names
+        contributors = []  # Use a list to store contributors
+        
+        for row in reader:
+            contributor = {
+                "username": row['User Link'],
+                "email": row["Email"],
+                "commit_date": row.get("Commit Date")  # Use .get() to avoid KeyError if the column doesn't exist
+            }
+            contributors.append(contributor)  # Store contributor as a dictionary
 
     global existing_usernames
-    existing_usernames = read_existing_usernames(user_input_file)
+    existing_usernames = read_existing_usernames()
 
     user_info_list = []  # Initialize an empty list to store user info
-    length = len(usernames)
+    length = len(contributors)
 
-    for index, user in enumerate(usernames):
+    for index, user in enumerate(contributors):
         user_info = fetch_user_info(user)
         if user_info:
             user_info_list.append(user_info)  # Append only the user info
@@ -141,12 +163,11 @@ def main():
     print(
         f"{Fore.GREEN}🎉 Import Finished! 🎉{Style.RESET_ALL}\n"
         f"{'-' * 35}\n"
-        f"Imported Members:   {new_added}/{len(usernames)}\n"
+        f"Imported Members:   {new_added}/{length}\n"  # Fixed here to use length of contributors
         f"Result Members:     {len(existing_usernames)}\n"
         f"Email Members:      {email_members}\n"
         f"{'-' * 35}"
     )
-
 
 if __name__ == "__main__":
     main()

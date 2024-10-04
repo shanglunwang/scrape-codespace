@@ -43,6 +43,7 @@ def search_repositories(query, sort="updated", order="desc"):
             ):  # If fewer than per_page items returned, we're done
                 break
             page += 1  # Go to the next page
+            save_repositories_to_csv(data["items"])
         else:
             print(f"Failed to fetch data: {response.status_code}")
             break
@@ -72,10 +73,30 @@ def save_repositories_to_csv(repositories, filename=f"res/repositories-{version}
 
 
 def main():
-    query = ["DApp", "Staking", "FOMO", "Liquidity", "Mining"]
-    for q in query:
+    blockchain_keywords = [
+        "Tokenization",
+        "Distributed Ledger",
+        "Fork",
+        "Mining",
+        "Ledger",
+        "Public Blockchain",
+        "Private Blockchain",
+        "DApp (Decentralized Application)",
+        "Gas Fees",
+        "Interoperability",
+        "Tokenomics",
+        "ICO (Initial Coin Offering)",
+        "DAO (Decentralized Autonomous Organization)",
+        "Validator",
+        "Supply Chain Management",
+        "Immutable",
+        "Address",
+        "Sidechain",
+        "Sharding"
+    ]
+
+    for q in blockchain_keywords:
         result = search_repositories(q)
-        save_repositories_to_csv(result)
 
 
 if __name__ == "__main__":

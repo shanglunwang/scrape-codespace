@@ -14,10 +14,10 @@ load_dotenv()
 GITHUB_TOKEN = os.getenv("GITHUB_TOKEN")
 HEADERS = {"Authorization": f"token {GITHUB_TOKEN}"}
 
-input_suffix = 'contributors-202410021911'
+input_suffix = 'contributors-202410030537'
 input_file = Path.cwd() / f"res/{input_suffix}.csv"
 
-version = utils.get_current_gmt9()
+version = '7days'
 # user_input_suffix = utils.get_current_gmt9()
 user_input_suffix='7days'
 user_input_file = Path.cwd() / f"res/users-{user_input_suffix}.csv"
